@@ -1,0 +1,44 @@
+# DEPP.rc 
+# latexmk configuration file to detect TeX Live dependendencies
+
+####################
+# user settings, may be changed:
+####################
+
+$pdf_mode=4;# This may be changed, but currently we test using lualatex
+$depp_options = "";# add options, see DEPP documentation for explanation
+$jobname='DEPP-%A';# DEPP-<basename of the file we run>
+
+####################
+# end of settings
+####################
+
+
+# Add DEPP generally for all TeX commands this variant does not use $pre_tex_code, see below
+&set_tex_cmds('%O'
+        . '\'\RequirePackage['.$depp_options.']{depp}\input{%A}\''
+        );
+
+
+
+####################
+# variant which would use $pre_tex_code so if -usepretex is set
+# disabled by defaul, you an uncomment to use:
+####################
+=begin comment
+
+
+&set_tex_cmds('%O'
+        . '\'\RequirePackage['.$depp_options.']{depp}\''.'%P'
+        );
+
+=end comment
+=cut
+####################
+# end of commented pretex variant
+####################
+
+# Set jobname to input filename to avoid use of fallback value “texput”
+if ($jobname eq "" ) {
+	$jobname = '%A';
+}
